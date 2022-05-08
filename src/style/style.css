@@ -1,0 +1,154 @@
+:root {
+    --shadow: 0 0 20px rgba(0,0,0,.7) inset;
+    --bg: #121212;
+  }
+
+.keyboard {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 5px 0;
+    background: var(--bg);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    user-select: none;
+    transition: bottom 0.4s;
+}
+
+.keyboard--hidden {
+    bottom: -100%;
+}
+
+.keyboard__keys {
+    text-align: center;
+}
+
+.keyboard__key {
+    height: 45px;
+    width: 6%;
+    max-width: 90px;
+    margin: 3px;
+    border-radius: 4px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 1.05rem;
+    outline: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: top;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+}
+
+.keyboard__key:active {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.keyboard__key--wide {
+    width: 12%;
+}
+
+.keyboard__key--extra-wide {
+    width: 36%;
+    max-width: 500px;
+}
+
+.keyboard__key--activatable::after {
+    content: '';
+    top: 10px;
+    right: 10px;
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+}
+
+.keyboard__key--active::after {
+    background: #08ff00;
+}
+
+.keyboard__key--dark {
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.screen {
+    border: red 2px solid;
+
+}
+
+  .keyboard__key {
+    height: 45px;
+    width: 6%;
+    max-width: 90px;
+    margin: 3px;
+    border-radius: 4px;
+    border: none;
+    font-size: 1.05rem;
+    outline: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: top;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    background: linear-gradient(crimson, orangered, gold);
+    box-shadow: 0 0 20px rgba(0,0,0,.7), var(--shadow);
+}
+.keyboard__key:before,
+.keyboard__key:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  box-shadow: var(--shadow);
+  animation: opacity 6s infinite;
+  opacity: 0;
+  border-radius: 4px;
+  }
+
+  .keyboard__key:before {
+      background: linear-gradient(120deg,
+        yellow, yellowgreen, steelblue);
+      animation-delay: 2s;
+    }
+
+  .keyboard__key:after {
+      background: linear-gradient(240deg,
+        skyblue, violet, purple);
+      animation-delay: 4s;
+    }
+
+    .keyboard__key div {
+        width:90%;
+        height: 90%;
+        background-color: var(--bg) ;
+        border-radius: 4px;
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        font-size: 1.05rem;
+        line-height: 2rem;
+        text-shadow: 0 0 15px rgba(0,0,0,.5);
+        font-family: Tahoma;
+        color: #FFF;
+        mix-blend-mode: multiply;
+        }
+
+  @keyframes opacity {
+    30% {
+      opacity: 1;
+    }
+    60% {
+      opacity: 0;
+    }
+  }
+  
