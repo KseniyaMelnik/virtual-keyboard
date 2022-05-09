@@ -267,8 +267,8 @@ const keyboardData = {
     block: 'numKey',
   },
   CapsLock: {
-    en: 'Caps Lock',
-    ru: 'Caps Lock',
+    en: 'caps',
+    ru: 'caps',
     block: 'mainKey',
     class: 'keyboard__key--wide',
   },
@@ -349,8 +349,8 @@ const keyboardData = {
     block: 'numKey',
   },
   ShiftLeft: {
-    en: 'Shift',
-    ru: 'Shift',
+    en: 'shift',
+    ru: 'shift',
     block: 'mainKey',
     class: 'keyboard__key--shift',
   },
@@ -406,8 +406,8 @@ const keyboardData = {
     block: 'mainKey',
   },
   ShiftRight: {
-    en: 'Shift',
-    ru: 'Shift',
+    en: 'shift',
+    ru: 'shift',
     block: 'mainKey',
     class: 'keyboard__key--shift',
   },

@@ -168,14 +168,16 @@
 
 .mainGroup {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: flex-end;
+  width: 1200px;
+  margin: 0 auto;
 }
 
 .mainBlock {
   display: flex;
   flex-wrap: wrap;
-  max-width: 800px;
+  max-width: 765px;
 }
 
 .numPad {
@@ -189,6 +191,7 @@
   grid-template-rows: repeat(2, 45px);
   grid-template-columns: repeat(3, 45px);
   grid-gap: 5px;
+  margin-bottom: 7px;
 }
 
 .arrowKey:nth-child(1) {

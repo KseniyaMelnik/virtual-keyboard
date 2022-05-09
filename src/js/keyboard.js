@@ -94,7 +94,18 @@ class Keyboard {
         case 'F7':
         case 'F8':
         case 'F9':
-
+        case 'F10':
+        case 'F11':
+        case 'F12': 
+        case 'Delete': 
+        case 'Pause': 
+        case 'PrtSc': 
+        case 'Home':
+        case 'FnLeft': 
+        case 'FnRight': 
+        case 'MetaLeft': 
+        case 'ContextMenu':
+        
           keyElement.addEventListener('mousedown', () => {
           });
           break;
@@ -121,6 +132,13 @@ class Keyboard {
           });
 
           break;
+          case 'NumpadEnter':
+            keyElement.addEventListener('mousedown', () => {
+              this.value += '\n';
+              this.screen.value = this.value;
+            });
+  
+            break;
 
         case 'Tab':
           keyElement.addEventListener('mousedown', () => {
