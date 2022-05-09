@@ -1,99 +1,153 @@
+import getCaretPos from './getCaretPos';
+import KeyButton from './keyButton';
+import setCaretToPos from './setCaretPos';
+import toggleCase from './toggleCase';
+
 class Keyboard {
-  constructor() {
+  constructor(keyboardData) {
+    this.keyboardData = keyboardData;
     this.main = null;
     this.keysContainer = null;
     this.screen = null;
     this.keys = [];
     this.value = '';
     this.capsLock = false;
+    this.shift = false;
+    this.language = 'en';
   }
 
   init() {
-    // Create main elements
     this.main = document.createElement('div');
     this.keysContainer = document.createElement('div');
     this.screen = document.createElement('textarea');
 
-    // Setup main elements
     this.main.classList.add('keyboard');
     this.keysContainer.classList.add('keyboard__keys');
     this.keysContainer.append(this.#createKeys());
     this.screen.classList.add('screen');
     this.keys = this.keysContainer.querySelectorAll('.keyboard__key');
 
-    // Add to DOM
     this.main.append(this.keysContainer);
+    this.main.prepend(this.screen);
     document.body.append(this.main);
-    document.body.prepend(this.screen);
   }
 
   #createKeys() {
     const fragment = document.createDocumentFragment();
-    const keyLayout = [
-      '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'backspace',
-      'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
-      'caps', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'enter',
-      'done', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '?',
-      'space',
-    ];
+    const keyLayout = { ...this.keyboardData };
 
-    // Creates HTML for an icon
-    const createInnerHTML = () => document.createElement('div');
-    keyLayout.forEach((key) => {
-      const keyElement = document.createElement('button');
-      const insertLineBreak = ['backspace', 'p', 'enter', '?'].indexOf(key) !== -1;
+    const mainBlock = document.createElement('div');
+    mainBlock.classList.add('mainBlock');
+    const numBlock = document.createElement('div');
+    numBlock.classList.add('numPad');
+    const arrowBlock = document.createElement('div');
+    arrowBlock.classList.add('arrowBlock');
+    const settingBlock = document.createElement('div');
+    settingBlock.classList.add('settingsBlock');
 
-      // Add attributes/classes
-      keyElement.setAttribute('type', 'button');
-      keyElement.classList.add('keyboard__key');
+    const allButtons = Object.keys(keyLayout);
+    allButtons.forEach((prop) => {
+      let parentBlock = null;
+      switch (keyLayout[prop].block) {
+        case 'numKey':
+          parentBlock = numBlock;
+          break;
+        case 'arrowKey':
+          parentBlock = arrowBlock;
+          break;
+        case 'settingKey':
+          parentBlock = settingBlock;
+          break;
+        default:
+          parentBlock = mainBlock;
+          break;
+      }
 
-      switch (key) {
-        case 'backspace':
-          keyElement.classList.add('keyboard__key--wide');
-          const backspaceContainer = createInnerHTML();
-          backspaceContainer.innerHTML = 'backspace';
-          keyElement.append(backspaceContainer);
+      const keyElement = new KeyButton(parentBlock, prop, keyLayout, this.language).create();
 
-          keyElement.addEventListener('click', () => {
-            this.value = this.value.substring(0, this.value.length - 1);
+      switch (prop) {
+        case 'Backspace':
+          keyElement.addEventListener('mousedown', () => {
+            const position = getCaretPos(this.screen);
+            const arr = this.value.split('');
+            if (position !== 0) {
+              arr.splice(position - 1, 1);
+            }
+            const newValue = arr.join('');
+            this.value = newValue;
             this.screen.value = this.value;
+            if (position === 0) {
+              setCaretToPos(this.screen, 0);
+            } else {
+              setCaretToPos(this.screen, position - 1);
+            }
           });
-
           break;
 
-        case 'caps':
-          keyElement.classList.add('keyboard__key--wide', 'keyboard__key--activatable');
-          const capsContainer = createInnerHTML();
-          capsContainer.innerHTML = 'caps lock';
-          keyElement.append(capsContainer);
+        case 'Escape':
+        case 'F1':
+        case 'F2':
+        case 'F3':
+        case 'F4':
+        case 'F5':
+        case 'F6':
+        case 'F7':
+        case 'F8':
+        case 'F9':
 
-          keyElement.addEventListener('click', () => {
+          keyElement.addEventListener('mousedown', () => {
+          });
+          break;
+
+        case 'CapsLock':
+
+          keyElement.addEventListener('mousedown', () => {
             this.#toggleCapsLock();
-            keyElement.classList.toggle('keyboard__key--active', this.capsLock);
           });
 
           break;
 
-        case 'enter':
-          keyElement.classList.add('keyboard__key--wide');
-          const enterContainer = createInnerHTML();
-          enterContainer.innerHTML = 'enter';
-          keyElement.append(enterContainer);
+        case 'AltLeft':
+        case 'AltRight':
+         
+          break;
 
-          keyElement.addEventListener('click', () => {
+        case 'Enter':
+          keyElement.classList.add('keyboard__key--wide');
+
+          keyElement.addEventListener('mousedown', () => {
             this.value += '\n';
             this.screen.value = this.value;
           });
 
           break;
 
-        case 'space':
-          keyElement.classList.add('keyboard__key--extra-wide');
-          const spaceContainer = createInnerHTML();
-          spaceContainer.innerHTML = 'space';
-          keyElement.append(spaceContainer);
+        case 'Tab':
+          keyElement.addEventListener('mousedown', () => {
+            this.value += '    ';
+            this.screen.value = this.value;
+          });
 
-          keyElement.addEventListener('click', () => {
+          break;
+
+        case 'ControlLeft':
+          break;
+
+        case 'ControlRight':
+          break;
+
+        case 'ShiftLeft':
+        case 'ShiftRight':
+          keyElement.addEventListener('mousedown', () => {
+            this.#toggleShift();
+          });
+          keyElement.addEventListener('mouseup', () => {
+            this.#toggleShift();
+          });
+          break;
+
+        case 'Space':
+          keyElement.addEventListener('mousedown', () => {
             this.value += ' ';
             this.screen.value = this.value;
           });
@@ -101,36 +155,42 @@ class Keyboard {
           break;
 
         default:
-          const symbolContainer = document.createElement('div');
-          keyElement.append(symbolContainer);
-          symbolContainer.textContent = key.toLowerCase();
-          // keyElement.textContent = key.toLowerCase();
+          keyElement.addEventListener('mousedown', () => {
+            this.value += (this.capsLock && !this.shift) || (!this.capsLock && this.shift)
+              ? keyLayout[prop][this.language].toUpperCase()
+              : keyLayout[prop][this.language].toLowerCase();
 
-          keyElement.addEventListener('click', () => {
-            this.value += this.capsLock ? key.toUpperCase() : key.toLowerCase();
             this.screen.value = this.value;
           });
           break;
       }
-
-      fragment.append(keyElement);
-
-      if (insertLineBreak) {
-        fragment.append(document.createElement('br'));
-      }
     });
 
+    const block = document.createElement('div');
+    block.classList.add('mainGroup');
+    fragment.append(settingBlock);
+    fragment.append(block);
+    block.append(mainBlock);
+    block.append(arrowBlock);
+    block.append(numBlock);
     return fragment;
   }
 
   #toggleCapsLock() {
     this.capsLock = !this.capsLock;
 
-    for (const key of this.keys) {
-      key.innerHTML = this.capsLock
-        ? key.innerHTML.toUpperCase()
-        : key.innerHTML.toLowerCase();
-    }
+    this.keys.forEach((key, i) => {
+      this.keys[i].innerHTML = this.capsLock
+        ? this.keys[i].innerHTML.toUpperCase()
+        : this.keys[i].innerHTML.toLowerCase();
+    });
+  }
+
+  #toggleShift() {
+    this.shift = !this.shift;
+    this.keys.forEach((keySymbol, i) => {
+      this.keys[i].innerHTML = toggleCase(keySymbol.innerHTML);
+    });
   }
 }
 
